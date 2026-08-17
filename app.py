@@ -2,15 +2,12 @@ import profile
 
 from flask import Flask, render_template, request, redirect, url_for, jsonify, send_file, flash
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from dotenv import load_dotenv
 from models import db, User, TalentProfile
 from functools import wraps
 import os, bcrypt, secrets, tempfile
 
-load_dotenv()
-
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-key-change-me')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///talent.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
