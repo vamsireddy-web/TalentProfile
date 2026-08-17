@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<h4 class="mb-4" style="color:#0f2167">Admin — All Profiles</h4>
+<table class="table table-striped bg-white rounded shadow-sm">
+  <thead style="background:#0f2167;color:white;">
+    <tr>
+      <th>Name</th>
+      <th>Skills</th>
+      <th>Experience</th>
+      <th>Portfolio</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in profiles %}
+    <tr>
+      <td>{{ p.name or 'No name' }}</td>
+      <td>{{ p.skills or '—' }}</td>
+      <td>{{ (p.experience or '—')[:50] }}</td>
+      <td>{% if p.portfolio %}<a href="{{ p.portfolio }}" target="_blank">Link</a>{% else %}—{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

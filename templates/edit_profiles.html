@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7">
+    <div class="card p-4">
+      <h4 class="mb-4" style="color:#0f2167">Edit Profile</h4>
+      <form method="POST">
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Full Name</label>
+          <input type="text" name="name" class="form-control" value="{{ profile.name or '' }}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Bio</label>
+          <textarea name="bio" class="form-control" rows="3" placeholder="Tell us about yourself...">{{ profile.bio or '' }}</textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Skills <small class="text-muted">(comma separated)</small></label>
+          <input type="text" name="skills" class="form-control" value="{{ profile.skills or '' }}" placeholder="Python, Flask, AI, SQL">
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Experience</label>
+          <textarea name="experience" class="form-control" rows="3" placeholder="Your work experience...">{{ profile.experience or '' }}</textarea>
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Portfolio / GitHub Link</label>
+          <input type="text" name="portfolio" class="form-control" value="{{ profile.portfolio or '' }}" placeholder="https://github.com/yourname">
+        </div>
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-primary">Save Profile</button>
+          <a href="/dashboard" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

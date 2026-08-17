@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card p-4 mt-4">
+      <h3 class="mb-4 text-center" style="color:#0f2167">Create Account</h3>
+
+      {% if errors %}
+      <div class="alert alert-danger">
+        {% for e in errors %}<div>❌ {{ e }}</div>{% endfor %}
+      </div>
+      {% endif %}
+
+      <form method="POST">
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Full Name</label>
+          <input type="text" name="name" class="form-control" placeholder="e.g. Vamsi Reddy" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Email</label>
+          <input type="email" name="email" class="form-control" placeholder="your@email.com" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Password</label>
+          <input type="password" name="password" class="form-control" placeholder="Min 6 characters" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Confirm Password</label>
+          <input type="password" name="confirm_password" class="form-control" placeholder="Repeat password" required>
+        </div>
+        <button type="submit" class="btn btn-success w-100 py-2">Create Account</button>
+      </form>
+      <hr>
+      <div class="text-center">
+        Already have an account? <a href="/login" class="fw-bold">Login here</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

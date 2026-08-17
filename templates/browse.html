@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Browse Talents — Talent Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f0f2f8;
+      min-height: 100vh;
+    }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      background: linear-gradient(135deg, #0d1b4b 0%, #122578 100%);
+      padding: 14px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgba(13,27,75,0.3);
+    }
+    .navbar-brand {
+      display: flex; align-items: center; gap: 10px;
+      color: #fff; font-size: 1.15rem; font-weight: 700;
+      text-decoration: none; letter-spacing: -0.3px;
+    }
+    .navbar-brand .brand-icon {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .navbar-brand .brand-icon i { font-size: 17px; color: #fff; }
+    .nav-links { display: flex; align-items: center; gap: 8px; }
+    .nav-links a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      padding: 7px 14px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+    }
+    .nav-links .btn-nav {
+      background: #fff;
+      color: #0d1b4b;
+      font-weight: 600;
+      padding: 7px 18px;
+      border-radius: 8px;
+    }
+    .nav-links .btn-nav:hover {
+      background: #e8edf8;
+    }
+
+    /* ── HERO BANNER ── */
+    .hero {
+      background: linear-gradient(135deg, #0d1b4b 0%, #1a3a9e 100%);
+      padding: 52px 40px 56px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.06);
+      top: -200px; right: -100px;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.06);
+      bottom: -120px; left: -80px;
+    }
+    .hero h1 {
+      font-size: 2rem; font-weight: 700;
+      color: #fff; margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+    .hero h1 span { color: #7eb3ff; }
+    .hero p {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.95rem; margin-bottom: 32px;
+    }
+
+    /* ── SEARCH BAR ── */
+    .search-wrap {
+      display: flex;
+      max-width: 560px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+    .search-wrap .search-icon {
+      padding: 0 16px;
+      display: flex; align-items: center;
+      color: #a0aec0; font-size: 16px;
+    }
+    .search-wrap input {
+      flex: 1;
+      border: none; outline: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      color: #2d3748;
+      padding: 14px 0;
+      background: transparent;
+    }
+    .search-wrap input::placeholder { color: #b0bec5; }
+    .search-wrap button {
+      background: linear-gradient(135deg, #0d1b4b, #1a3a9e);
+      color: #fff;
+      border: none;
+      padding: 0 28px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      letter-spacing: 0.3px;
+    }
+    .search-wrap button:hover { opacity: 0.88; }
+
+    /* ── STATS ROW ── */
+    .stats-row {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 28px;
+    }
+    .stat { text-align: center; }
+    .stat .num { font-size: 1.4rem; font-weight: 700; color: #fff; }
+    .stat .lbl { font-size: 0.75rem; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; }
+
+    /* ── MAIN CONTENT ── */
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .section-header h2 {
+      font-size: 1.1rem; font-weight: 700;
+      color: #0d1b4b;
+    }
+    .section-header .count {
+      font-size: 0.82rem; color: #8892a4;
+      background: #e8edf8;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    /* ── TALENT CARDS GRID ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .talent-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px 24px 22px;
+      box-shadow: 0 2px 16px rgba(13,27,75,0.07);
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .talent-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #0d1b4b, #1a3a9e);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .talent-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 36px rgba(13,27,75,0.13);
+    }
+    .talent-card:hover::before { opacity: 1; }
+
+    /* Avatar */
+    .card-avatar {
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 16px;
+      border: 3px solid #e8edf8;
+    }
+    .avatar-placeholder {
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0d1b4b, #1a3a9e);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+      font-size: 22px; font-weight: 700; color: #fff;
+      flex-shrink: 0;
+    }
+
+    .card-name {
+      font-size: 1rem; font-weight: 700;
+      color: #0d1b4b; margin-bottom: 4px;
+    }
+    .card-experience {
+      font-size: 0.8rem; color: #8892a4;
+      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .card-bio {
+      font-size: 0.84rem; color: #4a5568;
+      line-height: 1.6;
+      margin-bottom: 16px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Skills */
+    .skills-wrap {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-bottom: 20px;
+    }
+    .skill-tag {
+      background: #eef2ff;
+      color: #122578;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.2px;
+    }
+    .skill-tag.extra {
+      background: #f0f2f8;
+      color: #8892a4;
+    }
+
+    /* Card footer */
+    .card-footer-custom {
+      display: flex;
+      gap: 8px;
+      padding-top: 16px;
+      border-top: 1px solid #f0f2f8;
+    }
+    .btn-view {
+      flex: 1;
+      padding: 8px 0;
+      background: linear-gradient(135deg, #0d1b4b, #1a3a9e);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-view:hover { opacity: 0.85; color: #fff; }
+    .btn-download {
+      padding: 8px 14px;
+      background: #f0f2f8;
+      color: #0d1b4b;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex; align-items: center; gap: 5px;
+      transition: background 0.2s;
+    }
+    .btn-download:hover { background: #e2e8f0; color: #0d1b4b; }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 2px 16px rgba(13,27,75,0.06);
+    }
+    .empty-icon {
+      width: 80px; height: 80px;
+      background: #eef2ff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+    }
+    .empty-icon i { font-size: 32px; color: #122578; }
+    .empty-state h3 {
+      font-size: 1.2rem; font-weight: 700;
+      color: #0d1b4b; margin-bottom: 8px;
+    }
+    .empty-state p {
+      font-size: 0.88rem; color: #8892a4;
+      margin-bottom: 24px;
+    }
+    .btn-create {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: linear-gradient(135deg, #0d1b4b, #1a3a9e);
+      color: #fff;
+      text-decoration: none;
+      padding: 12px 28px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .btn-create:hover {
+      opacity: 0.88; color: #fff;
+      transform: translateY(-1px);
+    }
+
+    /* ── PAGINATION ── */
+    .pagination-wrap {
+      display: flex; justify-content: center; align-items: center;
+      gap: 6px; margin-top: 16px;
+    }
+    .page-btn {
+      width: 38px; height: 38px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 8px;
+      border: 1.5px solid #e2e8f0;
+      background: #fff;
+      color: #4a5568;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .page-btn:hover { border-color: #122578; color: #122578; }
+    .page-btn.active {
+      background: linear-gradient(135deg, #0d1b4b, #1a3a9e);
+      color: #fff; border-color: transparent;
+    }
+    .page-btn.disabled { opacity: 0.4; pointer-events: none; }
+
+    @media (max-width: 640px) {
+      .navbar { padding: 12px 20px; }
+      .hero { padding: 36px 20px 40px; }
+      .hero h1 { font-size: 1.5rem; }
+      .stats-row { gap: 24px; }
+      .main { padding: 24px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="/" class="navbar-brand">
+      <div class="brand-icon"><i class="bi bi-person-lines-fill"></i></div>
+      Talent Profile
+    </a>
+    <div class="nav-links">
+      <a href="/browse" class="active">Browse</a>
+      {% if current_user.is_authenticated %}
+        <a href="/dashboard">Dashboard</a>
+        <a href="/logout">Logout</a>
+      {% else %}
+        <a href="/login">Login</a>
+        <a href="/register" class="btn-nav">Register</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>Discover <span>Top Talent</span></h1>
+    <p>Search and explore professionals by name, skills, or experience</p>
+
+    <form method="GET" action="/browse">
+      <div class="search-wrap">
+        <div class="search-icon"><i class="bi bi-search"></i></div>
+        <input
+          type="text"
+          name="q"
+          value="{{ query or '' }}"
+          placeholder="Search by name or skill..."
+          autocomplete="off"
+        />
+        <button type="submit">Search</button>
+      </div>
+    </form>
+
+    <div class="stats-row">
+      <div class="stat">
+        <div class="num">{{ talents.total if talents else 0 }}</div>
+        <div class="lbl">PROFILES</div>
+      </div>
+      <div class="stat">
+        <div class="num">{{ talents.pages if talents else 0 }}</div>
+        <div class="lbl">PAGES</div>
+      </div>
+      <div class="stat">
+        <div class="num">10</div>
+        <div class="lbl">PER PAGE</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <div class="section-header">
+      <h2>
+        {% if query %}
+          Results for "{{ query }}"
+        {% else %}
+          All Talents
+        {% endif %}
+      </h2>
+      {% if talents and talents.total > 0 %}
+        <span class="count">{{ talents.total }} found</span>
+      {% endif %}
+    </div>
+
+    {% if talents and talents.items %}
+
+      <div class="cards-grid">
+        {% for profile in talents.items %}
+        <div class="talent-card">
+
+          <!-- Avatar -->
+          {% if profile.photo %}
+            <img
+              src="{{ url_for('static', filename='uploads/' + profile.photo) }}"
+              class="card-avatar"
+              alt="{{ profile.name }}"
+            />
+          {% else %}
+            <div class="avatar-placeholder">
+              {{ profile.name[0].upper() if profile.name else '?' }}
+            </div>
+          {% endif %}
+
+          <div class="card-name">{{ profile.name or 'Unnamed' }}</div>
+
+          {% if profile.experience %}
+            <div class="card-experience">
+              <i class="bi bi-briefcase"></i>
+              {{ profile.experience }}
+            </div>
+          {% endif %}
+
+          {% if profile.bio %}
+            <p class="card-bio">{{ profile.bio }}</p>
+          {% endif %}
+
+          <!-- Skills -->
+          {% if profile.skills %}
+            <div class="skills-wrap">
+              {% set skill_list = profile.skills.split(',') %}
+              {% for skill in skill_list[:3] %}
+                <span class="skill-tag">{{ skill.strip() }}</span>
+              {% endfor %}
+              {% if skill_list|length > 3 %}
+                <span class="skill-tag extra">+{{ skill_list|length - 3 }} more</span>
+              {% endif %}
+            </div>
+          {% endif %}
+
+          <!-- Buttons -->
+          <div class="card-footer-custom">
+            {% if profile.portfolio %}
+              <a href="{{ profile.portfolio }}" target="_blank" class="btn-view">
+                <i class="bi bi-box-arrow-up-right"></i> Portfolio
+              </a>
+            {% endif %}
+            <a href="/profile/download/{{ profile.user_id }}" class="btn-download">
+              <i class="bi bi-file-earmark-pdf"></i> PDF
+            </a>
+          </div>
+
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- PAGINATION -->
+      {% if talents.pages > 1 %}
+      <div class="pagination-wrap">
+        <a
+          href="{{ url_for('browse', page=talents.prev_num, q=query) if talents.has_prev else '#' }}"
+          class="page-btn {{ 'disabled' if not talents.has_prev }}"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </a>
+
+        {% for page_num in talents.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+          {% if page_num %}
+            <a
+              href="{{ url_for('browse', page=page_num, q=query) }}"
+              class="page-btn {{ 'active' if page_num == talents.page }}"
+            >{{ page_num }}</a>
+          {% else %}
+            <span class="page-btn disabled">…</span>
+          {% endif %}
+        {% endfor %}
+
+        <a
+          href="{{ url_for('browse', page=talents.next_num, q=query) if talents.has_next else '#' }}"
+          class="page-btn {{ 'disabled' if not talents.has_next }}"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </a>
+      </div>
+      {% endif %}
+
+    {% else %}
+      <!-- EMPTY STATE -->
+      <div class="empty-state">
+        <div class="empty-icon">
+          <i class="bi bi-people"></i>
+        </div>
+        <h3>No talents found</h3>
+        <p>
+          {% if query %}
+            No results for "{{ query }}". Try a different search term.
+          {% else %}
+            Be the first to create a profile on this platform!
+          {% endif %}
+        </p>
+        {% if current_user.is_authenticated %}
+          <a href="/profile/edit" class="btn-create">
+            <i class="bi bi-plus-circle"></i> Create Your Profile
+          </a>
+        {% else %}
+          <a href="/register" class="btn-create">
+            <i class="bi bi-person-plus"></i> Join Now
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+
+  </div>
+
+</body>
+</html>
